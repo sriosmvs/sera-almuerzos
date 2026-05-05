@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Almuerzo — SERA</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #1a1c1c;
+    --surface:    #293132;
+    --surface2:   #323838;
+    --border:     #3d4444;
+    --red:        #8E1E26;
+    --red-bright: #b02430;
+    --amber:      #FFBF00;
+    --gray:       #4B4C4E;
+    --text:       #f0eded;
+    --muted:      #8a9090;
+    --green:      #2ec4b6;
+    --radius:     12px;
+    --tap:        52px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  nav { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 10; }
+  .logo-wrap { display: flex; align-items: center; gap: 10px; }
+  .logo-s { width: 34px; height: 34px; background: var(--red); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 19px; color: white; flex-shrink: 0; }
+  .logo-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--text); letter-spacing: 3px; text-transform: uppercase; line-height: 1.1; }
+  .logo-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; display: block; }
+  .nav-tabs { display: flex; gap: 6px; }
+  .nav-tab { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700; padding: 8px 14px; border-radius: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; min-height: 36px; transition: all 0.15s; }
+  .nav-tab.active { background: var(--red); color: white; border-color: var(--red); }
+
+  main { width: 100%; max-width: 480px; padding: 24px 16px 80px; flex: 1; }
+  .view { display: none; animation: fadeIn 0.25s ease; }
+  .view.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+  .day-badge { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
+  h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 700; line-height: 1.05; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  h1 span { color: var(--red-bright); }
+  .subtitle { color: var(--muted); font-size: 15px; margin-bottom: 28px; line-height: 1.4; }
+  .section-label { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; }
+
+  /* STATUS BAR */
+  .status-bar { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; font-size: 12px; font-weight: 600; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot.open { background: var(--green); }
+  .status-dot.closed { background: var(--red-bright); }
+  .status-dot.force { background: var(--amber); }
+  .status-text { flex: 1; color: var(--muted); }
+  .status-text strong { color: var(--text); }
+
+  /* FORCE SECTION */
+  .force-section { background: var(--surface); border: 1px solid var(--amber); border-radius: var(--radius); padding: 16px; margin-bottom: 20px; }
+  .force-label { font-size: 11px; color: var(--amber); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: 700; }
+  .force-row { display: flex; gap: 8px; }
+  .force-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
+  .force-input:focus { border-color: var(--amber); }
+  .force-input::placeholder { color: var(--muted); }
+  .btn-force { background: var(--amber); color: #1a1c1c; border: none; border-radius: 8px; padding: 12px 18px; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .force-error { font-size: 12px; color: var(--red-bright); margin-top: 8px; min-height: 16px; font-weight: 600; }
+  .force-active-badge { background: rgba(255,191,0,0.15); border: 1px solid var(--amber); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--amber); font-weight: 600; margin-bottom: 20px; display: none; }
+  .force-active-badge.show { display: block; }
+
+  /* SEARCH */
+  .search-wrap { position: relative; margin-bottom: 8px; }
+  .search-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 16px 15px 48px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 16px; outline: none; transition: border-color 0.2s; min-height: var(--tap); }
+  .search-input:focus { border-color: var(--amber); }
+  .search-input::placeholder { color: var(--muted); }
+  .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; pointer-events: none; }
+  .dropdown { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-height: 260px; overflow-y: auto; margin-bottom: 20px; display: none; -webkit-overflow-scrolling: touch; }
+  .dropdown.open { display: block; }
+  .dropdown-item { padding: 14px 16px; cursor: pointer; border-bottom: 1px solid var(--border); min-height: var(--tap); display: flex; flex-direction: column; justify-content: center; }
+  .dropdown-item:last-child { border-bottom: none; }
+  .dropdown-item:active { background: var(--surface2); }
+  .dname { font-weight: 600; font-size: 15px; }
+  .drole { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* SELECTED WORKER */
+  .selected-worker { display: none; background: var(--surface); border: 2px solid var(--amber); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 20px; align-items: center; gap: 12px; }
+  .selected-worker.show { display: flex; }
+  .worker-avatar { width: 42px; height: 42px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 14px; flex-shrink: 0; }
+  .worker-info { flex: 1; min-width: 0; }
+  .worker-name { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .worker-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .worker-clear { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 22px; padding: 8px; min-width: var(--tap); min-height: var(--tap); display: flex; align-items: center; justify-content: center; }
+
+  /* DATE SELECTOR */
+  .date-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 24px; }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    min-height: 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+  }
+  .date-btn:active { transform: scale(0.97); }
+  .date-btn.selected { border-color: var(--amber); background: rgba(255,191,0,0.08); }
+  .date-btn.already-registered { border-color: var(--green); background: rgba(46,196,182,0.06); opacity: 0.7; cursor: not-allowed; }
+  .date-btn.today-force { border-color: var(--amber); border-style: dashed; }
+  .date-weekday { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .date-num { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; line-height: 1; }
+  .date-month { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .date-check { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.15s; }
+  .date-btn.selected .date-check { background: var(--amber); border-color: var(--amber); color: #1a1c1c; font-weight: 700; }
+  .date-btn.already-registered .date-check { background: var(--green); border-color: var(--green); color: white; font-weight: 700; }
+  .date-tag { font-size: 10px; color: var(--amber); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .date-tag.registered { color: var(--green); }
+  .date-tag.force { color: var(--amber); font-style: italic; }
+
+  /* MEAL */
+  .meal-single { background: var(--surface); border: 2px solid var(--red); border-radius: var(--radius); padding: 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
+  .meal-icon { font-size: 32px; flex-shrink: 0; }
+  .meal-info { flex: 1; }
+  .meal-name { font-weight: 700; font-size: 17px; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+  .meal-desc { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .meal-badge { flex-shrink: 0; background: var(--red); color: white; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 20px; text-transform: uppercase; }
+
+  /* CONFIRM */
+  .btn-confirm { width: 100%; background: var(--red); color: white; border: none; border-radius: var(--radius); padding: 18px; font-family: 'Barlow', sans-serif; font-size: 17px; font-weight: 700; cursor: pointer; opacity: 0.4; pointer-events: none; text-transform: uppercase; letter-spacing: 0.5px; min-height: var(--tap); transition: opacity 0.2s; }
+  .btn-confirm.ready { opacity: 1; pointer-events: auto; }
+  .btn-confirm.ready:active { transform: scale(0.98); }
+
+  /* SUCCESS */
+  .success-screen { display: none; text-align: center; padding: 40px 0; animation: fadeIn 0.4s ease; }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 64px; margin-bottom: 16px; display: block; animation: pop 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
+  @keyframes pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .success-title { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .success-title span { color: var(--amber); }
+  .success-sub { color: var(--muted); font-size: 15px; line-height: 1.5; margin-bottom: 28px; }
+  .success-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: left; margin-bottom: 20px; }
+  .s-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 14px; border-bottom: 1px solid var(--border); gap: 12px; }
+  .s-row:last-child { border-bottom: none; }
+  .s-row .label { color: var(--muted); flex-shrink: 0; }
+  .s-row .value { font-weight: 700; text-align: right; }
+  .registered-days { display: flex; flex-wrap: wrap; gap: 6px; }
+  .day-pill { background: rgba(255,191,0,0.15); border: 1px solid var(--amber); border-radius: 20px; padding: 4px 10px; font-size: 12px; color: var(--amber); font-weight: 700; }
+  .btn-again { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; padding: 14px; border-radius: var(--radius); text-transform: uppercase; min-height: var(--tap); }
+
+  /* PIN MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 100; align-items: flex-end; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border-top: 3px solid var(--red); border-radius: 20px 20px 0 0; padding: 32px 24px 40px; width: 100%; max-width: 480px; text-align: center; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-icon { font-size: 36px; margin-bottom: 10px; }
+  .modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .modal-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  .pin-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 16px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 20px; text-align: center; letter-spacing: 6px; outline: none; margin-bottom: 8px; min-height: var(--tap); }
+  .pin-input:focus { border-color: var(--amber); }
+  .pin-error { font-size: 13px; color: var(--red-bright); margin-bottom: 14px; min-height: 18px; font-weight: 600; }
+  .btn-pin { width: 100%; background: var(--red); color: white; border: none; border-radius: var(--radius); padding: 16px; font-family: 'Barlow', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 12px; text-transform: uppercase; min-height: var(--tap); }
+  .btn-cancel { background: none; border: none; color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 14px; cursor: pointer; padding: 8px; min-height: var(--tap); }
+
+  /* SUPERVISOR */
+  .sup-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 12px; }
+  .sup-title { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .sup-title span { color: var(--amber); }
+  .cutoff-badge { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 11px; color: var(--muted); text-align: right; font-weight: 600; flex-shrink: 0; }
+  .cutoff-badge strong { display: block; color: var(--amber); font-size: 16px; }
+
+  /* DATE FILTER */
+  .date-filter { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .date-filter::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700; padding: 8px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; text-transform: uppercase; }
+  .filter-btn.active { background: var(--amber); color: #1a1c1c; border-color: var(--amber); }
+
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .stat-card.highlight { border-color: var(--red); }
+  .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 700; line-height: 1; }
+  .stat-num.amber { color: var(--amber); }
+  .stat-num.red { color: var(--red-bright); }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .list-section { margin-bottom: 20px; }
+  .list-title { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+  .list-title.confirmed { color: var(--amber); }
+  .person-list { display: flex; flex-direction: column; gap: 6px; }
+  .person-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; min-height: 48px; }
+  .p-name { flex: 1; font-weight: 600; font-size: 14px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .p-time { font-size: 12px; color: var(--muted); font-weight: 600; flex-shrink: 0; }
+  .mini-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; background: rgba(255,191,0,0.15); color: var(--amber); }
+  .whatsapp-btn { width: 100%; background: #25D366; color: white; border: none; border-radius: var(--radius); padding: 17px; font-family: 'Barlow', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; text-transform: uppercase; min-height: var(--tap); }
+  .refresh-btn { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; padding: 13px; border-radius: var(--radius); margin-top: 10px; text-transform: uppercase; min-height: var(--tap); }
+  .logout-btn { background: none; border: none; color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 13px; cursor: pointer; margin-top: 16px; display: block; margin-left: auto; text-transform: uppercase; font-weight: 700; padding: 8px 0; }
+
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    main { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+  }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-icon">🔐</div>
+    <div class="modal-title">Acceso supervisor</div>
+    <div class="modal-sub">Ingresa la clave para continuar</div>
+    <input class="pin-input" id="pin-input" type="password" inputmode="text" placeholder="••••••••" maxlength="20" onkeydown="if(event.key==='Enter') checkPin()" />
+    <div class="pin-error" id="pin-error"></div>
+    <button class="btn-pin" onclick="checkPin()">Ingresar</button>
+    <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+  </div>
+</div>
+
+<nav>
+  <div class="logo-wrap">
+    <div class="logo-s">S</div>
+    <div>
+      <div class="logo-text">SERA</div>
+      <span class="logo-sub">Almuerzos</span>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-operario" onclick="switchToOperario()">Operario</button>
+    <button class="nav-tab" id="tab-supervisor" onclick="requestSupervisor()">Supervisor</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ══ OPERARIO ══ -->
+  <div class="view active" id="view-operario">
+    <div id="form-screen">
+      <div class="day-badge" id="today-label"></div>
+      <h1>Pide tu<br><span>almuerzo.</span></h1>
+      <p class="subtitle">Busca tu nombre, elige los días y confirma.</p>
+
+      <!-- STATUS BAR -->
+      <div class="status-bar" id="status-bar">
+        <div class="status-dot" id="status-dot"></div>
+        <div class="status-text" id="status-text"></div>
+      </div>
+
+      <!-- FORCE SECTION (9:00–23:59, solo supervisor) -->
+      <div class="force-section" id="force-section" style="display:none">
+        <div class="force-label">🔑 Clave de fuerza — supervisores</div>
+        <div class="force-row">
+          <input class="force-input" id="force-input" type="password" inputmode="text" placeholder="Ingresa la clave..." maxlength="20" onkeydown="if(event.key==='Enter') checkForce()" />
+          <button class="btn-force" onclick="checkForce()">OK</button>
+        </div>
+        <div class="force-error" id="force-error"></div>
+      </div>
+
+      <!-- FORCE ACTIVE BADGE -->
+      <div class="force-active-badge" id="force-active-badge">
+        ✓ Clave de fuerza activa — puedes registrar para hoy
+      </div>
+
+      <!-- WORKER SEARCH -->
+      <div class="section-label">¿Quién eres?</div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="search-input" type="text" inputmode="search" placeholder="Escribe tu apellido..." autocomplete="off" autocorrect="off" spellcheck="false" oninput="filterWorkers()" onfocus="openDropdown()" />
+      </div>
+      <div class="dropdown" id="worker-dropdown"></div>
+
+      <div class="selected-worker" id="selected-worker">
+        <div class="worker-avatar" id="worker-avatar"></div>
+        <div class="worker-info">
+          <div class="worker-name" id="worker-name-display"></div>
+          <div class="worker-role" id="worker-role-display"></div>
+        </div>
+        <button class="worker-clear" onclick="clearWorker()">✕</button>
+      </div>
+
+      <!-- DATE SELECTOR -->
+      <div id="date-selector-wrap" style="display:none">
+        <div class="section-label">¿Qué días quieres pedir?</div>
+        <div class="date-grid" id="date-grid"></div>
+
+        <!-- MEAL -->
+        <div class="section-label">Tu pedido</div>
+        <div class="meal-single">
+          <div class="meal-icon">🍱</div>
+          <div class="meal-info">
+            <div class="meal-name">Menú del día</div>
+            <div class="meal-desc">Sopa + segundo + refresco</div>
+          </div>
+          <div class="meal-badge">✓</div>
+        </div>
+
+        <button class="btn-confirm" id="btn-confirm" onclick="confirmOrder()">Confirmar pedido →</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="success-screen">
+      <span class="success-icon">✅</span>
+      <div class="success-title">¡Listo, <span id="success-name"></span>!</div>
+      <p class="success-sub">Tus almuerzos están registrados.<br>Recógelos a las 12:30 pm cada día.</p>
+      <div class="success-card">
+        <div class="s-row"><span class="label">Trabajador</span><span class="value" id="sc-name"></span></div>
+        <div class="s-row"><span class="label">Días registrados</span><span class="value"><div class="registered-days" id="sc-days"></div></span></div>
+        <div class="s-row"><span class="label">Pedido</span><span class="value">🍱 Menú del día</span></div>
+      </div>
+      <button class="btn-again" onclick="resetForm()">← Registrar otra persona</button>
+    </div>
+  </div>
+
+  <!-- ══ SUPERVISOR ══ -->
+  <div class="view" id="view-supervisor">
+    <div class="sup-header">
+      <div>
+        <div class="day-badge" id="sup-date-label"></div>
+        <div class="sup-title">Panel <span>supervisor</span></div>
+      </div>
+      <div class="cutoff-badge">Cierre<br><strong>9:00 am</strong></div>
+    </div>
+
+    <!-- DATE FILTER -->
+    <div class="section-label">Ver pedidos del día</div>
+    <div class="date-filter" id="sup-date-filter"></div>
+
+    <div class="stats-row">
+      <div class="stat-card highlight">
+        <div class="stat-num amber" id="stat-confirmed">—</div>
+        <div class="stat-label">🍱 Pedidos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num red" id="stat-pending">—</div>
+        <div class="stat-label">Sin registrar</div>
+      </div>
+    </div>
+
+    <div class="list-section">
+      <div class="list-title confirmed"><span class="dot" style="background:var(--amber)"></span>Confirmados</div>
+      <div class="person-list" id="list-confirmed"><div class="person-row" style="color:var(--muted)">Cargando...</div></div>
+    </div>
+
+    <button class="whatsapp-btn" onclick="sendWhatsApp()">📲 Enviar resumen por WhatsApp</button>
+    <button class="refresh-btn" onclick="loadSupDate()">↻ Actualizar</button>
+    <button class="logout-btn" onclick="logoutSupervisor()">Cerrar sesión</button>
+  </div>
+
+</main>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFo3DG9f92FjbwI32DhIYiSE6hrEyoPuwS-GYV2AV1lZeIcG8UKjcWu_tvH4Fks0QxzA/exec';
+const PIN = 'SERA2026';
+
+const WORKERS = [
+  {id:1,  name:"Elguera Maravi Richard Aldair",       role:"Ayudante de Galvanizado"},
+  {id:2,  name:"Ahon Saenz Walter Gustavo",            role:"Lider Comercial"},
+  {id:3,  name:"Aguilar Salas Jonathan Mesias",        role:"Ayudante de Proceso"},
+  {id:4,  name:"Gonzalez Blanco Angel Luis",           role:"Ayudante de Galvanizado"},
+  {id:5,  name:"Zamora Yroba Ezequiel Josue",          role:"Operador de Galvanizado"},
+  {id:6,  name:"Durand Ramos Miguel",                  role:"Supervisor"},
+  {id:7,  name:"Gallo Ruiz Florian Enzo Marcelo",      role:"Jefe de Galvanizado"},
+  {id:8,  name:"Diaz Buendia Andres Dionicio",         role:"Preparador de Carga"},
+  {id:9,  name:"Barrios Figueroa Hector Luis",         role:"Ayudante de Galvanizado"},
+  {id:10, name:"Huamani Buleje Jhoel Jeferson",        role:"Asistente Comercial"},
+  {id:11, name:"Choy Rojas Luis Miguel",               role:"Control de Calidad"},
+  {id:12, name:"Chinchay Garcia Miguel Angel",         role:"Ayudante de Proceso"},
+  {id:13, name:"Ortiz Blanco Servando Daniel",         role:"Ayudante de Galvanizado"},
+  {id:14, name:"Hernandez Maestre Alexzu Del Valle",   role:"Supervisor de Mantenimiento"},
+  {id:15, name:"Pacheco Moreno Pedro Ricardo",         role:"Jefe de Logistica"},
+  {id:16, name:"Martinez Marin Juan Carlos",           role:"Jefe de Transportes"},
+  {id:17, name:"Fernandez Lector David Daniel",        role:"Gerente de Operaciones"},
+  {id:18, name:"Cubas Diaz Fernando",                  role:"Ayudante de Galvanizado"},
+  {id:19, name:"Olivos Guivar Alex Orlando",           role:"Ayudante de Galvanizado"},
+  {id:20, name:"Rojas Flores Julio Edwin",             role:"Ayudante de Proceso"},
+  {id:21, name:"Cespedes Palacios Irvin",              role:"Supervisor"},
+  {id:22, name:"Figueroa Santacruz Kevin Yarly",       role:"Operario Soldador"},
+  {id:23, name:"Basilio Manrique Merly Samanta",       role:"Operador de Limpieza"},
+  {id:24, name:"Bastardo Rodriguez Henrry Alexis",     role:"Operario Soldador"},
+  {id:25, name:"Niquin Mucha Jorge Armando",           role:"Control de Calidad"},
+  {id:26, name:"Ramon Perez Cesar David",              role:"Encargado de SSOMA"},
+  {id:27, name:"Ortega Gratelly Dandy",                role:"Supervisor"},
+  {id:28, name:"Huapaya Sulca Oscar Pedro",            role:"Ayudante de Galvanizado"},
+  {id:29, name:"Huaman Salas Christian Nico",          role:"Operador de Procesos"},
+  {id:30, name:"Ortelano Yahuarcani Willy",            role:"Ayudante de Proceso"},
+  {id:31, name:"Correa Aguilar Juan Carlos",           role:"Ayudante de Galvanizado"},
+  {id:32, name:"Padilla Huayamba Tomas",               role:"Ayudante de Galvanizado"},
+  {id:33, name:"Chavez De La Cruz Cristian Pool",      role:"Ayudante de Proceso"},
+  {id:34, name:"Ortelano Yahuarcani Orlando",          role:"Ayudante de Proceso"},
+  {id:35, name:"Bardales Sandoval Jorge",              role:"Operador de Procesos"},
+  {id:36, name:"Pancorbo Zumba Jhon Amilcar",          role:"Ayudante de Galvanizado"},
+  {id:37, name:"Barrientos Marcacuzco Antony Brayan",  role:"Ayudante de Proceso"},
+  {id:38, name:"Flores Ostos Juan Carlos",             role:"Ayudante de Galvanizado"},
+  {id:39, name:"Livelli Mansilla Miguel Angel",        role:"Ayudante de Galvanizado"},
+  {id:40, name:"Palomino Farfan Huilder",              role:"Ayudante de Galvanizado"},
+  {id:41, name:"Parrilla Huanca Leiber",               role:"Operador de Procesos"},
+  {id:42, name:"Flores Lopez Fernando Junior",         role:"Ayudante de Proceso"},
+  {id:43, name:"Salazar Guerra Neiser",                role:"Ayudante de Galvanizado"},
+  {id:44, name:"Huaman Huerta Nicasio",                role:"Ayudante de Proceso"},
+  {id:45, name:"Quispe Alarcon Walter Cesar",          role:"Ayudante de Proceso"},
+  {id:46, name:"Pomazoncco Yupanqui Juan Carlos",      role:"Ayudante de Proceso"},
+  {id:47, name:"Villaran Oliveira Moises Humberto",    role:"Ayudante de Galvanizado"},
+];
+
+const DAYS_ES = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MONTHS_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+let selectedWorker = null;
+let selectedDates = new Set(); // set of dateKey strings
+let registeredDates = new Set(); // dates already in Sheet for this worker
+let supUnlocked = false;
+let forceUnlocked = false;
+let liveCount = 0;
+let supSelectedDate = null;
+
+// ── DATE UTILS ──
+function dateKey(d) {
+  return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+function dateLabel(d) {
+  return `${DAYS_ES[d.getDay()]} ${d.getDate()} ${MONTHS_ES[d.getMonth()]}`;
+}
+function dateShort(d) {
+  return `${DAYS_ES[d.getDay()]} ${d.getDate()}`;
+}
+function today() { const d = new Date(); d.setHours(0,0,0,0); return d; }
+function getHour() { return new Date().getHours(); }
+
+// Returns available date objects for the current week (Mon–Sun)
+function getWeekDates() {
+  const now = today();
+  const dow = now.getDay(); // 0=Sun
+  // Monday of this week
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1));
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    dates.push(d);
+  }
+  return dates;
+}
+
+// Dates operario can see (no force)
+function getAvailableDates() {
+  const h = getHour();
+  const todayD = today();
+  const week = getWeekDates();
+  if (h < 9) {
+    // hoy + resto semana
+    return week.filter(d => d >= todayD);
+  } else {
+    // 9:00+ → solo desde mañana
+    const tomorrow = new Date(todayD);
+    tomorrow.setDate(todayD.getDate() + 1);
+    return week.filter(d => d >= tomorrow);
+  }
+}
+
+// Status logic
+function getStatus() {
+  const h = getHour();
+  if (h < 9) return { type: 'open', text: '<strong>Registro abierto</strong> — puedes pedir para hoy y esta semana', dot: 'open' };
+  if (h < 15) return { type: 'closed', text: '<strong>Registro cerrado</strong> — solo supervisores pueden añadir pedidos de hoy', dot: 'closed' };
+  return { type: 'open-tomorrow', text: '<strong>Registro abierto</strong> — puedes pedir para mañana y esta semana', dot: 'open' };
+}
+
+function showForceSection() {
+  const h = getHour();
+  return h >= 9; // visible desde 9am todo el día
+}
+
+// ── INIT ──
+document.getElementById('today-label').textContent = new Date().toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
+document.getElementById('sup-date-label').textContent = new Date().toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
+initStatusBar();
+initSupDateFilter();
+
+function initStatusBar() {
+  const s = getStatus();
+  document.getElementById('status-dot').className = `status-dot ${s.dot}`;
+  document.getElementById('status-text').innerHTML = s.text;
+  document.getElementById('force-section').style.display = showForceSection() && !forceUnlocked ? 'block' : 'none';
+
+  const si = document.getElementById('search-input');
+
+
+
+}
+
+// ── FORCE KEY ──
+function checkForce() {
+  const val = document.getElementById('force-input').value;
+  if (val === PIN) {
+    forceUnlocked = true;
+    document.getElementById('force-section').style.display = 'none';
+    document.getElementById('force-active-badge').classList.add('show');
+    document.getElementById('force-input').value = '';
+    document.getElementById('force-error').textContent = '';
+    // Rebuild date grid if worker already selected
+    if (selectedWorker) buildDateGrid();
+  } else {
+    document.getElementById('force-error').textContent = 'Clave incorrecta.';
+    document.getElementById('force-input').value = '';
+  }
+}
+
+// ── WORKER SEARCH ──
+function filterWorkers() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  const dd = document.getElementById('worker-dropdown');
+  const filtered = q.length < 1
+    ? WORKERS.slice(0,15)
+    : WORKERS.filter(w => w.name.toLowerCase().includes(q));
+  dd.innerHTML = filtered.length === 0
+    ? '<div class="dropdown-item"><div class="dname" style="color:#8a9090">No encontrado</div></div>'
+    : filtered.map(w => `<div class="dropdown-item" onclick="selectWorker(${w.id})"><div class="dname">${w.name}</div><div class="drole">${w.role}</div></div>`).join('');
+  dd.classList.add('open');
+}
+function openDropdown() { filterWorkers(); }
+
+async function selectWorker(id) {
+  const w = WORKERS.find(x => x.id === id);
+  if (!w) return;
+  selectedWorker = w;
+  selectedDates.clear();
+  registeredDates.clear();
+  document.getElementById('search-input').value = '';
+  document.getElementById('worker-dropdown').classList.remove('open');
+  document.getElementById('worker-avatar').textContent = initials(w.name);
+  document.getElementById('worker-name-display').textContent = w.name;
+  document.getElementById('worker-role-display').textContent = w.role;
+  document.getElementById('selected-worker').classList.add('show');
+  document.getElementById('date-selector-wrap').style.display = 'block';
+
+  // Show grid immediately, then update with registered dates from Sheet
+  buildDateGrid();
+  checkConfirmReady();
+  loadWorkerRegistrations(w.name).then(() => { buildDateGrid(); checkConfirmReady(); });
+}
+
+async function loadWorkerRegistrations(nombre) {
+  try {
+    const week = getWeekDates();
+    const keys = week.map(d => dateKey(d));
+    // Fetch all dates of this week for this worker
+    for (const key of keys) {
+      const res = await fetch(`${SCRIPT_URL}?fecha=${encodeURIComponent(key)}`);
+      const rows = await res.json();
+      if (rows.some(r => r.nombre === nombre)) {
+        registeredDates.add(key);
+      }
+    }
+  } catch(e) { console.error(e); }
+}
+
+function buildDateGrid() {
+  const availableNormal = getAvailableDates();
+  const todayD = today();
+  const todayK = dateKey(todayD);
+  const grid = document.getElementById('date-grid');
+
+  // All week dates
+  const week = getWeekDates();
+
+  grid.innerHTML = week.map(d => {
+    const key = dateKey(d);
+    const isToday = key === todayK;
+    const isPast = d < todayD;
+    const isRegistered = registeredDates.has(key);
+    const isAvailableNormal = availableNormal.some(av => dateKey(av) === key);
+    const isTodayForce = isToday && forceUnlocked && getHour() >= 9;
+    const isAvailable = isAvailableNormal || isTodayForce;
+    const isSelected = selectedDates.has(key);
+
+    if (isPast) return ''; // skip past days
+
+    let cls = 'date-btn';
+    let tag = '';
+    let onclick = '';
+
+    if (isRegistered) {
+      cls += ' already-registered';
+      tag = '<div class="date-tag registered">✓ Ya registrado</div>';
+    } else if (!isAvailable) {
+      cls += '';
+      tag = '<div class="date-tag" style="color:var(--muted)">No disponible</div>';
+      onclick = ''; // disabled
+    } else {
+      if (isTodayForce && isToday) tag = '<div class="date-tag force">Clave de fuerza</div>';
+      if (isSelected) cls += ' selected';
+      onclick = `onclick="toggleDate('${key}', this)"`;
+    }
+
+    return `<div class="${cls}" ${onclick} data-key="${key}">
+      <div class="date-check">${isRegistered ? '✓' : isSelected ? '✓' : ''}</div>
+      <div class="date-weekday">${DAYS_ES[d.getDay()]}${isToday ? ' · HOY' : ''}</div>
+      <div class="date-num">${d.getDate()}</div>
+      <div class="date-month">${MONTHS_ES[d.getMonth()]}</div>
+      ${tag}
+    </div>`;
+  }).join('');
+}
+
+function toggleDate(key, el) {
+  const todayK = dateKey(today());
+  const isToday = key === todayK;
+  const h = getHour();
+
+  // Block today after 9am without force
+  if (isToday && h >= 9 && !forceUnlocked) return;
+  // Block if already registered
+  if (registeredDates.has(key)) return;
+
+  if (selectedDates.has(key)) {
+    selectedDates.delete(key);
+    el.classList.remove('selected');
+    el.querySelector('.date-check').textContent = '';
+  } else {
+    selectedDates.add(key);
+    el.classList.add('selected');
+    el.querySelector('.date-check').textContent = '✓';
+  }
+  checkConfirmReady();
+}
+
+function clearWorker() {
+  selectedWorker = null;
+  selectedDates.clear();
+  registeredDates.clear();
+  document.getElementById('selected-worker').classList.remove('show');
+  document.getElementById('date-selector-wrap').style.display = 'none';
+  checkConfirmReady();
+}
+
+function checkConfirmReady() {
+  const ready = selectedWorker && selectedDates.size > 0;
+  document.getElementById('btn-confirm').classList.toggle('ready', ready);
+}
+
+function initials(name) { return name.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap') && !e.target.closest('.dropdown'))
+    document.getElementById('worker-dropdown').classList.remove('open');
+});
+
+// ── CONFIRM ──
+async function confirmOrder() {
+  if (!selectedWorker || selectedDates.size === 0) return;
+  const btn = document.getElementById('btn-confirm');
+  btn.textContent = 'Guardando...';
+  btn.classList.remove('ready');
+
+  const hora = new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'});
+  const datesArr = Array.from(selectedDates);
+
+  for (const fecha of datesArr) {
+    try {
+      await fetch(SCRIPT_URL, {
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({fecha, nombre:selectedWorker.name, cargo:selectedWorker.role, hora})
+      });
+    } catch(e) { console.error(e); }
+  }
+
+  // Show success
+  const firstName = selectedWorker.name.split(' ')[2] || selectedWorker.name.split(' ')[0];
+  document.getElementById('success-name').textContent = firstName;
+  document.getElementById('sc-name').textContent = selectedWorker.name;
+  document.getElementById('sc-days').innerHTML = datesArr.map(k => `<span class="day-pill">${k}</span>`).join('');
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('success-screen').classList.add('show');
+  forceUnlocked = false;
+  btn.textContent = 'Confirmar pedido →';
+}
+
+function resetForm() {
+  selectedWorker = null;
+  selectedDates.clear();
+  registeredDates.clear();
+  forceUnlocked = false;
+  document.getElementById('selected-worker').classList.remove('show');
+  document.getElementById('date-selector-wrap').style.display = 'none';
+  document.getElementById('force-active-badge').classList.remove('show');
+  document.getElementById('form-screen').style.display = 'block';
+  document.getElementById('success-screen').classList.remove('show');
+  initStatusBar();
+}
+
+// ── PIN MODAL ──
+function requestSupervisor() {
+  if (supUnlocked) { activateSupervisor(); return; }
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+  setTimeout(() => document.getElementById('pin-input').focus(), 350);
+}
+function checkPin() {
+  const val = document.getElementById('pin-input').value;
+  if (val === PIN) {
+    supUnlocked = true;
+    document.getElementById('modal-overlay').classList.remove('open');
+    activateSupervisor();
+  } else {
+    document.getElementById('pin-error').textContent = 'Clave incorrecta.';
+    document.getElementById('pin-input').value = '';
+  }
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+// ── VIEWS ──
+function switchToOperario() {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-operario').classList.add('active');
+  document.getElementById('tab-operario').classList.add('active');
+}
+function activateSupervisor() {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-supervisor').classList.add('active');
+  document.getElementById('tab-supervisor').classList.add('active');
+  loadSupDate();
+}
+function logoutSupervisor() { supUnlocked = false; switchToOperario(); }
+
+// ── SUPERVISOR DATE FILTER ──
+function initSupDateFilter() {
+  const week = getWeekDates();
+  const todayK = dateKey(today());
+  const container = document.getElementById('sup-date-filter');
+  container.innerHTML = week.map(d => {
+    const key = dateKey(d);
+    const isToday = key === todayK;
+    return `<button class="filter-btn${isToday?' active':''}" data-key="${key}" onclick="selectSupDate('${key}', this)">${dateShort(d)}${isToday?' · Hoy':''}</button>`;
+  }).join('');
+  supSelectedDate = todayK;
+}
+
+function selectSupDate(key, el) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  supSelectedDate = key;
+  loadSupDate();
+}
+
+async function loadSupDate() {
+  if (!supSelectedDate) return;
+  document.getElementById('stat-confirmed').textContent = '...';
+  document.getElementById('stat-pending').textContent = '...';
+  document.getElementById('list-confirmed').innerHTML = '<div class="person-row" style="color:var(--muted)">Cargando...</div>';
+
+  let rows = [];
+  try {
+    rows = await jsonpFetch(`${SCRIPT_URL}?fecha=${encodeURIComponent(supSelectedDate)}`);
+    if (!Array.isArray(rows)) rows = [];
+  } catch(e) { console.error(e); }
+
+  liveCount = rows.length;
+  const confirmedNames = rows.map(r=>r.nombre);
+  const pending = WORKERS.filter(w=>!confirmedNames.includes(w.name));
+
+  document.getElementById('stat-confirmed').textContent = rows.length;
+  document.getElementById('stat-pending').textContent = pending.length;
+
+  document.getElementById('list-confirmed').innerHTML = rows.length === 0
+    ? '<div class="person-row" style="color:var(--muted)">Sin pedidos para este día</div>'
+    : rows.map(r=>`<div class="person-row"><div class="mini-avatar">${initials(r.nombre)}</div><div class="p-name">${r.nombre}</div><div class="p-time">${r.hora||''}</div></div>`).join('');
+}
+
+// ── WHATSAPP ──
+function sendWhatsApp() {
+  const d = new Date();
+  const label = supSelectedDate || dateKey(today());
+  let msg = `🔩 *SERA — Pedido de almuerzo*\n📅 ${label}\n\n🍱 *Menús solicitados: ${liveCount}*\n\n_Cierre: 9:00 am_`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+</script>
+</body>
+</html>
