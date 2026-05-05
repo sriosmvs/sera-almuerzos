@@ -20,155 +20,87 @@
     --gray:       #4B4C4E;
     --text:       #f0eded;
     --muted:      #8a9090;
+    --green:      #2ec4b6;
     --radius:     12px;
-    --tap:        52px; /* minimum tap target */
+    --tap:        52px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html { font-size: 16px; }
-  body {
-    font-family: 'Barlow', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* NAV */
-  nav {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+  body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; -webkit-font-smoothing: antialiased; }
+  nav { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 10; }
   .logo-wrap { display: flex; align-items: center; gap: 10px; }
   .logo-s { width: 34px; height: 34px; background: var(--red); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 19px; color: white; flex-shrink: 0; }
   .logo-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--text); letter-spacing: 3px; text-transform: uppercase; line-height: 1.1; }
   .logo-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; display: block; }
   .nav-tabs { display: flex; gap: 6px; }
-  .nav-tab {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Barlow', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 8px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    min-height: 36px;
-    transition: all 0.15s;
-  }
+  .nav-tab { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700; padding: 8px 14px; border-radius: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; min-height: 36px; transition: all 0.15s; }
   .nav-tab.active { background: var(--red); color: white; border-color: var(--red); }
-
   main { width: 100%; max-width: 480px; padding: 24px 16px 80px; flex: 1; }
   .view { display: none; animation: fadeIn 0.25s ease; }
   .view.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* DAY BADGE */
   .day-badge { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
-
-  /* HEADING */
   h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 700; line-height: 1.05; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
   h1 span { color: var(--red-bright); }
   .subtitle { color: var(--muted); font-size: 15px; margin-bottom: 28px; line-height: 1.4; }
-
-  /* SECTION LABEL */
   .section-label { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; }
-
-  /* CLOSED BANNER */
-  .closed-banner { background: var(--surface); border: 1px solid var(--red); border-radius: var(--radius); padding: 24px 20px; text-align: center; margin-bottom: 24px; }
-  .cb-icon { font-size: 36px; margin-bottom: 10px; }
-  .cb-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; color: var(--red-bright); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .cb-sub { font-size: 14px; color: var(--muted); line-height: 1.5; }
-  .force-section { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 24px; }
-  .force-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; }
-  .force-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 16px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 16px; outline: none; transition: border-color 0.2s; margin-bottom: 8px; }
+  .status-bar { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; font-size: 12px; font-weight: 600; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot.open { background: var(--green); }
+  .status-dot.closed { background: var(--red-bright); }
+  .status-text { flex: 1; color: var(--muted); }
+  .status-text strong { color: var(--text); }
+  .force-section { background: var(--surface); border: 1px solid var(--amber); border-radius: var(--radius); padding: 16px; margin-bottom: 20px; }
+  .force-label { font-size: 11px; color: var(--amber); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: 700; }
+  .force-row { display: flex; gap: 8px; }
+  .force-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
   .force-input:focus { border-color: var(--amber); }
   .force-input::placeholder { color: var(--muted); }
-  .force-error { font-size: 13px; color: var(--red-bright); margin-bottom: 12px; min-height: 18px; font-weight: 600; }
-  .btn-force { width: 100%; background: var(--gray); color: white; border: none; border-radius: var(--radius); padding: 16px; font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; min-height: var(--tap); }
-
-  /* SEARCH */
+  .btn-force { background: var(--amber); color: #1a1c1c; border: none; border-radius: 8px; padding: 12px 18px; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .force-error { font-size: 12px; color: var(--red-bright); margin-top: 8px; min-height: 16px; font-weight: 600; }
+  .force-active-badge { background: rgba(255,191,0,0.15); border: 1px solid var(--amber); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--amber); font-weight: 600; margin-bottom: 20px; display: none; }
+  .force-active-badge.show { display: block; }
   .search-wrap { position: relative; margin-bottom: 8px; }
-  .search-input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 15px 16px 15px 48px;
-    color: var(--text);
-    font-family: 'Barlow', sans-serif;
-    font-size: 16px; /* 16px prevents iOS zoom */
-    outline: none;
-    transition: border-color 0.2s;
-    min-height: var(--tap);
-  }
+  .search-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 16px 15px 48px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 16px; outline: none; transition: border-color 0.2s; min-height: var(--tap); }
   .search-input:focus { border-color: var(--amber); }
   .search-input::placeholder { color: var(--muted); }
   .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; pointer-events: none; }
-
-  /* DROPDOWN */
-  .dropdown { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-height: 280px; overflow-y: auto; margin-bottom: 20px; display: none; -webkit-overflow-scrolling: touch; }
+  .dropdown { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-height: 260px; overflow-y: auto; margin-bottom: 20px; display: none; -webkit-overflow-scrolling: touch; }
   .dropdown.open { display: block; }
-  .dropdown-item { padding: 14px 16px; cursor: pointer; border-bottom: 1px solid var(--border); transition: background 0.1s; min-height: var(--tap); display: flex; flex-direction: column; justify-content: center; }
+  .dropdown-item { padding: 14px 16px; cursor: pointer; border-bottom: 1px solid var(--border); min-height: var(--tap); display: flex; flex-direction: column; justify-content: center; }
   .dropdown-item:last-child { border-bottom: none; }
   .dropdown-item:active { background: var(--surface2); }
   .dname { font-weight: 600; font-size: 15px; }
   .drole { font-size: 12px; color: var(--muted); margin-top: 3px; }
-
-  /* SELECTED WORKER */
   .selected-worker { display: none; background: var(--surface); border: 2px solid var(--amber); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 20px; align-items: center; gap: 12px; }
   .selected-worker.show { display: flex; }
   .worker-avatar { width: 42px; height: 42px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 14px; flex-shrink: 0; }
   .worker-info { flex: 1; min-width: 0; }
   .worker-name { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .worker-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .worker-clear { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 22px; padding: 8px; line-height: 1; min-width: var(--tap); min-height: var(--tap); display: flex; align-items: center; justify-content: center; }
-
-  /* MEAL */
+  .worker-clear { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 22px; padding: 8px; min-width: var(--tap); min-height: var(--tap); display: flex; align-items: center; justify-content: center; }
+  .date-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 24px; }
+  .date-btn { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; cursor: pointer; text-align: left; transition: all 0.15s; min-height: 72px; display: flex; flex-direction: column; justify-content: center; gap: 4px; position: relative; }
+  .date-btn:active { transform: scale(0.97); }
+  .date-btn.selected { border-color: var(--amber); background: rgba(255,191,0,0.08); }
+  .date-btn.already-registered { border-color: var(--green); background: rgba(46,196,182,0.06); opacity: 0.7; cursor: not-allowed; }
+  .date-weekday { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .date-num { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; line-height: 1; }
+  .date-month { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .date-check { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.15s; }
+  .date-btn.selected .date-check { background: var(--amber); border-color: var(--amber); color: #1a1c1c; font-weight: 700; }
+  .date-btn.already-registered .date-check { background: var(--green); border-color: var(--green); color: white; font-weight: 700; }
+  .date-tag { font-size: 10px; color: var(--amber); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .date-tag.registered { color: var(--green); }
+  .date-tag.force { color: var(--amber); font-style: italic; }
   .meal-single { background: var(--surface); border: 2px solid var(--red); border-radius: var(--radius); padding: 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
   .meal-icon { font-size: 32px; flex-shrink: 0; }
   .meal-info { flex: 1; }
-  .meal-name { font-weight: 700; font-size: 17px; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+  .meal-name { font-weight: 700; font-size: 17px; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; }
   .meal-desc { font-size: 13px; color: var(--muted); margin-top: 3px; }
   .meal-badge { flex-shrink: 0; background: var(--red); color: white; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 20px; text-transform: uppercase; }
-
-  /* CONFIRM BTN */
-  .btn-confirm {
-    width: 100%;
-    background: var(--red);
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    padding: 18px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    cursor: pointer;
-    opacity: 0.4;
-    pointer-events: none;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    min-height: var(--tap);
-    transition: opacity 0.2s, transform 0.1s;
-  }
+  .btn-confirm { width: 100%; background: var(--red); color: white; border: none; border-radius: var(--radius); padding: 18px; font-family: 'Barlow', sans-serif; font-size: 17px; font-weight: 700; cursor: pointer; opacity: 0.4; pointer-events: none; text-transform: uppercase; letter-spacing: 0.5px; min-height: var(--tap); transition: opacity 0.2s; }
   .btn-confirm.ready { opacity: 1; pointer-events: auto; }
   .btn-confirm.ready:active { transform: scale(0.98); }
-
-  /* SUCCESS */
   .success-screen { display: none; text-align: center; padding: 40px 0; animation: fadeIn 0.4s ease; }
   .success-screen.show { display: block; }
   .success-icon { font-size: 64px; margin-bottom: 16px; display: block; animation: pop 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
@@ -176,14 +108,15 @@
   .success-title { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
   .success-title span { color: var(--amber); }
   .success-sub { color: var(--muted); font-size: 15px; line-height: 1.5; margin-bottom: 28px; }
-  .success-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: left; }
+  .success-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: left; margin-bottom: 20px; }
   .s-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 14px; border-bottom: 1px solid var(--border); gap: 12px; }
   .s-row:last-child { border-bottom: none; }
   .s-row .label { color: var(--muted); flex-shrink: 0; }
   .s-row .value { font-weight: 700; text-align: right; }
-
-  /* PIN MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 100; align-items: flex-end; justify-content: center; padding-bottom: env(safe-area-inset-bottom); }
+  .registered-days { display: flex; flex-wrap: wrap; gap: 6px; }
+  .day-pill { background: rgba(255,191,0,0.15); border: 1px solid var(--amber); border-radius: 20px; padding: 4px 10px; font-size: 12px; color: var(--amber); font-weight: 700; }
+  .btn-again { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; padding: 14px; border-radius: var(--radius); text-transform: uppercase; min-height: var(--tap); }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 100; align-items: flex-end; justify-content: center; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--surface); border-top: 3px solid var(--red); border-radius: 20px 20px 0 0; padding: 32px 24px 40px; width: 100%; max-width: 480px; text-align: center; animation: slideUp 0.3s ease; }
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -195,13 +128,15 @@
   .pin-error { font-size: 13px; color: var(--red-bright); margin-bottom: 14px; min-height: 18px; font-weight: 600; }
   .btn-pin { width: 100%; background: var(--red); color: white; border: none; border-radius: var(--radius); padding: 16px; font-family: 'Barlow', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 12px; text-transform: uppercase; min-height: var(--tap); }
   .btn-cancel { background: none; border: none; color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 14px; cursor: pointer; padding: 8px; min-height: var(--tap); }
-
-  /* SUPERVISOR */
   .sup-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 12px; }
   .sup-title { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
   .sup-title span { color: var(--amber); }
   .cutoff-badge { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 11px; color: var(--muted); text-align: right; font-weight: 600; flex-shrink: 0; }
   .cutoff-badge strong { display: block; color: var(--amber); font-size: 16px; }
+  .date-filter { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .date-filter::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700; padding: 8px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; text-transform: uppercase; }
+  .filter-btn.active { background: var(--amber); color: #1a1c1c; border-color: var(--amber); }
   .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
   .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
   .stat-card.highlight { border-color: var(--red); }
@@ -212,40 +147,20 @@
   .list-section { margin-bottom: 20px; }
   .list-title { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
   .list-title.confirmed { color: var(--amber); }
-  .list-title.pending { color: var(--red-bright); }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
   .person-list { display: flex; flex-direction: column; gap: 6px; }
   .person-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; min-height: 48px; }
   .p-name { flex: 1; font-weight: 600; font-size: 14px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .p-time { font-size: 12px; color: var(--muted); font-weight: 600; flex-shrink: 0; }
-  .mini-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
-  .mini-avatar.ok { background: rgba(255,191,0,0.15); color: var(--amber); }
-  .mini-avatar.no { background: rgba(142,30,38,0.2); color: var(--red-bright); }
+  .mini-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; background: rgba(255,191,0,0.15); color: var(--amber); }
   .whatsapp-btn { width: 100%; background: #25D366; color: white; border: none; border-radius: var(--radius); padding: 17px; font-family: 'Barlow', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; text-transform: uppercase; min-height: var(--tap); }
-  .whatsapp-btn:active { opacity: 0.85; }
-  .refresh-btn { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; padding: 13px; border-radius: var(--radius); margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; min-height: var(--tap); }
+  .refresh-btn { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; padding: 13px; border-radius: var(--radius); margin-top: 10px; text-transform: uppercase; min-height: var(--tap); }
   .logout-btn { background: none; border: none; color: var(--muted); font-family: 'Barlow', sans-serif; font-size: 13px; cursor: pointer; margin-top: 16px; display: block; margin-left: auto; text-transform: uppercase; font-weight: 700; padding: 8px 0; }
-
-  /* QR VIEW */
-  .qr-wrap { text-align: center; padding: 20px 0; }
-  .qr-box { background: white; border-radius: 16px; padding: 20px; display: inline-block; margin: 20px auto; }
-  .qr-box canvas { display: block; }
-  .qr-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .qr-sub { font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.4; }
-  .qr-url { font-size: 12px; color: var(--muted); word-break: break-all; margin-top: 12px; padding: 10px 14px; background: var(--surface); border-radius: 8px; }
-
-  /* SAFE AREA */
-  @supports (padding-bottom: env(safe-area-inset-bottom)) {
-    main { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
-  }
-
+  @supports (padding-bottom: env(safe-area-inset-bottom)) { main { padding-bottom: calc(80px + env(safe-area-inset-bottom)); } }
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 </style>
 </head>
 <body>
-
-<!-- PIN MODAL — slides up from bottom (native mobile feel) -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-icon">🔐</div>
@@ -257,7 +172,6 @@
     <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
   </div>
 </div>
-
 <nav>
   <div class="logo-wrap">
     <div class="logo-s">S</div>
@@ -271,38 +185,31 @@
     <button class="nav-tab" id="tab-supervisor" onclick="requestSupervisor()">Supervisor</button>
   </div>
 </nav>
-
 <main>
-
-  <!-- ══ OPERARIO ══ -->
   <div class="view active" id="view-operario">
-
-    <div id="closed-section" style="display:none">
-      <div class="closed-banner">
-        <div class="cb-icon">🚫</div>
-        <div class="cb-title">Registro cerrado por hoy</div>
-        <div class="cb-sub">El registro de almuerzos cerró a las 9:00 am.<br>Si tienes una situación especial, usa la clave de fuerza.</div>
-      </div>
-      <div class="force-section">
-        <div class="force-label">Clave de fuerza — solo supervisores</div>
-        <input class="force-input" id="force-input" type="password" inputmode="text" placeholder="Ingresa la clave..." maxlength="20" onkeydown="if(event.key==='Enter') checkForce()" />
-        <div class="force-error" id="force-error"></div>
-        <button class="btn-force" onclick="checkForce()">Habilitar registro →</button>
-      </div>
-    </div>
-
     <div id="form-screen">
       <div class="day-badge" id="today-label"></div>
-      <h1>Pide tu<br><span>almuerzo</span> hoy.</h1>
-      <p class="subtitle">Busca tu nombre y confirma.</p>
-
+      <h1>Pide tu<br><span>almuerzo.</span></h1>
+      <p class="subtitle">Busca tu nombre, elige los días y confirma.</p>
+      <div class="status-bar" id="status-bar">
+        <div class="status-dot" id="status-dot"></div>
+        <div class="status-text" id="status-text"></div>
+      </div>
+      <div class="force-section" id="force-section" style="display:none">
+        <div class="force-label">🔑 Clave de fuerza — supervisores</div>
+        <div class="force-row">
+          <input class="force-input" id="force-input" type="password" inputmode="text" placeholder="Ingresa la clave..." maxlength="20" onkeydown="if(event.key==='Enter') checkForce()" />
+          <button class="btn-force" onclick="checkForce()">OK</button>
+        </div>
+        <div class="force-error" id="force-error"></div>
+      </div>
+      <div class="force-active-badge" id="force-active-badge">✓ Clave de fuerza activa — puedes registrar para hoy</div>
       <div class="section-label">¿Quién eres?</div>
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
         <input class="search-input" id="search-input" type="text" inputmode="search" placeholder="Escribe tu apellido..." autocomplete="off" autocorrect="off" spellcheck="false" oninput="filterWorkers()" onfocus="openDropdown()" />
       </div>
       <div class="dropdown" id="worker-dropdown"></div>
-
       <div class="selected-worker" id="selected-worker">
         <div class="worker-avatar" id="worker-avatar"></div>
         <div class="worker-info">
@@ -311,34 +218,33 @@
         </div>
         <button class="worker-clear" onclick="clearWorker()">✕</button>
       </div>
-
-      <div class="section-label">Tu pedido</div>
-      <div class="meal-single">
-        <div class="meal-icon">🍱</div>
-        <div class="meal-info">
-          <div class="meal-name">Menú del día</div>
-          <div class="meal-desc">Sopa + segundo + refresco</div>
+      <div id="date-selector-wrap" style="display:none">
+        <div class="section-label">¿Qué días quieres pedir?</div>
+        <div class="date-grid" id="date-grid"></div>
+        <div class="section-label">Tu pedido</div>
+        <div class="meal-single">
+          <div class="meal-icon">🍱</div>
+          <div class="meal-info">
+            <div class="meal-name">Menú del día</div>
+            <div class="meal-desc">Sopa + segundo + refresco</div>
+          </div>
+          <div class="meal-badge">✓</div>
         </div>
-        <div class="meal-badge">✓</div>
+        <button class="btn-confirm" id="btn-confirm" onclick="confirmOrder()">Confirmar pedido →</button>
       </div>
-
-      <button class="btn-confirm" id="btn-confirm" onclick="confirmOrder()">Confirmar pedido →</button>
     </div>
-
     <div class="success-screen" id="success-screen">
       <span class="success-icon">✅</span>
       <div class="success-title">¡Listo, <span id="success-name"></span>!</div>
-      <p class="success-sub">Tu almuerzo está registrado.<br>Recógelo a las 12:30 pm.</p>
+      <p class="success-sub">Tus almuerzos están registrados.<br>Recógelos a las 12:30 pm cada día.</p>
       <div class="success-card">
         <div class="s-row"><span class="label">Trabajador</span><span class="value" id="sc-name"></span></div>
+        <div class="s-row"><span class="label">Días registrados</span><span class="value"><div class="registered-days" id="sc-days"></div></span></div>
         <div class="s-row"><span class="label">Pedido</span><span class="value">🍱 Menú del día</span></div>
-        <div class="s-row"><span class="label">Fecha</span><span class="value" id="sc-date"></span></div>
-        <div class="s-row"><span class="label">Hora</span><span class="value" id="sc-time"></span></div>
       </div>
+      <button class="btn-again" onclick="resetForm()">← Registrar otra persona</button>
     </div>
   </div>
-
-  <!-- ══ SUPERVISOR ══ -->
   <div class="view" id="view-supervisor">
     <div class="sup-header">
       <div>
@@ -347,10 +253,12 @@
       </div>
       <div class="cutoff-badge">Cierre<br><strong>9:00 am</strong></div>
     </div>
+    <div class="section-label">Ver pedidos del día</div>
+    <div class="date-filter" id="sup-date-filter"></div>
     <div class="stats-row">
       <div class="stat-card highlight">
         <div class="stat-num amber" id="stat-confirmed">—</div>
-        <div class="stat-label">🍱 Confirmados</div>
+        <div class="stat-label">🍱 Pedidos</div>
       </div>
       <div class="stat-card">
         <div class="stat-num red" id="stat-pending">—</div>
@@ -358,279 +266,87 @@
       </div>
     </div>
     <div class="list-section">
-      <div class="list-title confirmed"><span class="dot"></span>Confirmados</div>
+      <div class="list-title confirmed"><span class="dot" style="background:var(--amber)"></span>Confirmados</div>
       <div class="person-list" id="list-confirmed"><div class="person-row" style="color:var(--muted)">Cargando...</div></div>
     </div>
-    <div class="list-section">
-      <div class="list-title pending"><span class="dot"></span>Sin registrar</div>
-      <div class="person-list" id="list-pending"></div>
-    </div>
     <button class="whatsapp-btn" onclick="sendWhatsApp()">📲 Enviar resumen por WhatsApp</button>
-    <button class="refresh-btn" onclick="renderSupervisor()">↻ Actualizar</button>
+    <button class="refresh-btn" onclick="loadSupDate()">↻ Actualizar</button>
     <button class="logout-btn" onclick="logoutSupervisor()">Cerrar sesión</button>
   </div>
-
-  <!-- ══ QR ══ -->
-  <div class="view" id="view-qr">
-    <div class="day-badge">Acceso rápido</div>
-    <div class="qr-wrap">
-      <div class="qr-title">Código QR</div>
-      <div class="qr-sub">Imprime este QR y pégalo en planta.<br>Operarios lo escanean para pedir.</div>
-      <div class="qr-box">
-        <canvas id="qr-canvas"></canvas>
-      </div>
-      <div class="qr-url" id="qr-url-display"></div>
-    </div>
-  </div>
-
 </main>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLEEP4hPI73sK2WjDSewxWOtLNDAPwYXQchqRg1wsUpgV-zD3p6817nbWFbYsfxw8m5w/exec';
 const PIN = 'SERA2026';
-
 const WORKERS = [
-  {id:1,  name:"Elguera Maravi Richard Aldair",       role:"Ayudante de Galvanizado"},
-  {id:2,  name:"Ahon Saenz Walter Gustavo",            role:"Lider Comercial"},
-  {id:3,  name:"Aguilar Salas Jonathan Mesias",        role:"Ayudante de Proceso"},
-  {id:4,  name:"Gonzalez Blanco Angel Luis",           role:"Ayudante de Galvanizado"},
-  {id:5,  name:"Zamora Yroba Ezequiel Josue",          role:"Operador de Galvanizado"},
-  {id:6,  name:"Durand Ramos Miguel",                  role:"Supervisor"},
-  {id:7,  name:"Gallo Ruiz Florian Enzo Marcelo",      role:"Jefe de Galvanizado"},
-  {id:8,  name:"Diaz Buendia Andres Dionicio",         role:"Preparador de Carga"},
-  {id:9,  name:"Barrios Figueroa Hector Luis",         role:"Ayudante de Galvanizado"},
-  {id:10, name:"Huamani Buleje Jhoel Jeferson",        role:"Asistente Comercial"},
-  {id:11, name:"Choy Rojas Luis Miguel",               role:"Control de Calidad"},
-  {id:12, name:"Chinchay Garcia Miguel Angel",         role:"Ayudante de Proceso"},
-  {id:13, name:"Ortiz Blanco Servando Daniel",         role:"Ayudante de Galvanizado"},
-  {id:14, name:"Hernandez Maestre Alexzu Del Valle",   role:"Supervisor de Mantenimiento"},
-  {id:15, name:"Pacheco Moreno Pedro Ricardo",         role:"Jefe de Logistica"},
-  {id:16, name:"Martinez Marin Juan Carlos",           role:"Jefe de Transportes"},
-  {id:17, name:"Fernandez Lector David Daniel",        role:"Gerente de Operaciones"},
-  {id:18, name:"Cubas Diaz Fernando",                  role:"Ayudante de Galvanizado"},
-  {id:19, name:"Olivos Guivar Alex Orlando",           role:"Ayudante de Galvanizado"},
-  {id:20, name:"Rojas Flores Julio Edwin",             role:"Ayudante de Proceso"},
-  {id:21, name:"Cespedes Palacios Irvin",              role:"Supervisor"},
-  {id:22, name:"Figueroa Santacruz Kevin Yarly",       role:"Operario Soldador"},
-  {id:23, name:"Basilio Manrique Merly Samanta",       role:"Operador de Limpieza"},
-  {id:24, name:"Bastardo Rodriguez Henrry Alexis",     role:"Operario Soldador"},
-  {id:25, name:"Niquin Mucha Jorge Armando",           role:"Control de Calidad"},
-  {id:26, name:"Ramon Perez Cesar David",              role:"Encargado de SSOMA"},
-  {id:27, name:"Ortega Gratelly Dandy",                role:"Supervisor"},
-  {id:28, name:"Huapaya Sulca Oscar Pedro",            role:"Ayudante de Galvanizado"},
-  {id:29, name:"Huaman Salas Christian Nico",          role:"Operador de Procesos"},
-  {id:30, name:"Ortelano Yahuarcani Willy",            role:"Ayudante de Proceso"},
-  {id:31, name:"Correa Aguilar Juan Carlos",           role:"Ayudante de Galvanizado"},
-  {id:32, name:"Padilla Huayamba Tomas",               role:"Ayudante de Galvanizado"},
-  {id:33, name:"Chavez De La Cruz Cristian Pool",      role:"Ayudante de Proceso"},
-  {id:34, name:"Ortelano Yahuarcani Orlando",          role:"Ayudante de Proceso"},
-  {id:35, name:"Bardales Sandoval Jorge",              role:"Operador de Procesos"},
-  {id:36, name:"Pancorbo Zumba Jhon Amilcar",          role:"Ayudante de Galvanizado"},
-  {id:37, name:"Barrientos Marcacuzco Antony Brayan",  role:"Ayudante de Proceso"},
-  {id:38, name:"Flores Ostos Juan Carlos",             role:"Ayudante de Galvanizado"},
-  {id:39, name:"Livelli Mansilla Miguel Angel",        role:"Ayudante de Galvanizado"},
-  {id:40, name:"Palomino Farfan Huilder",              role:"Ayudante de Galvanizado"},
-  {id:41, name:"Parrilla Huanca Leiber",               role:"Operador de Procesos"},
-  {id:42, name:"Flores Lopez Fernando Junior",         role:"Ayudante de Proceso"},
-  {id:43, name:"Salazar Guerra Neiser",                role:"Ayudante de Galvanizado"},
-  {id:44, name:"Huaman Huerta Nicasio",                role:"Ayudante de Proceso"},
-  {id:45, name:"Quispe Alarcon Walter Cesar",          role:"Ayudante de Proceso"},
-  {id:46, name:"Pomazoncco Yupanqui Juan Carlos",      role:"Ayudante de Proceso"},
-  {id:47, name:"Villaran Oliveira Moises Humberto",    role:"Ayudante de Galvanizado"},
+  {id:1,name:"Elguera Maravi Richard Aldair",role:"Ayudante de Galvanizado"},
+  {id:2,name:"Ahon Saenz Walter Gustavo",role:"Lider Comercial"},
+  {id:3,name:"Aguilar Salas Jonathan Mesias",role:"Ayudante de Proceso"},
+  {id:4,name:"Gonzalez Blanco Angel Luis",role:"Ayudante de Galvanizado"},
+  {id:5,name:"Zamora Yroba Ezequiel Josue",role:"Operador de Galvanizado"},
+  {id:6,name:"Durand Ramos Miguel",role:"Supervisor"},
+  {id:7,name:"Gallo Ruiz Florian Enzo Marcelo",role:"Jefe de Galvanizado"},
+  {id:8,name:"Diaz Buendia Andres Dionicio",role:"Preparador de Carga"},
+  {id:9,name:"Barrios Figueroa Hector Luis",role:"Ayudante de Galvanizado"},
+  {id:10,name:"Huamani Buleje Jhoel Jeferson",role:"Asistente Comercial"},
+  {id:11,name:"Choy Rojas Luis Miguel",role:"Control de Calidad"},
+  {id:12,name:"Chinchay Garcia Miguel Angel",role:"Ayudante de Proceso"},
+  {id:13,name:"Ortiz Blanco Servando Daniel",role:"Ayudante de Galvanizado"},
+  {id:14,name:"Hernandez Maestre Alexzu Del Valle",role:"Supervisor de Mantenimiento"},
+  {id:15,name:"Pacheco Moreno Pedro Ricardo",role:"Jefe de Logistica"},
+  {id:16,name:"Martinez Marin Juan Carlos",role:"Jefe de Transportes"},
+  {id:17,name:"Fernandez Lector David Daniel",role:"Gerente de Operaciones"},
+  {id:18,name:"Cubas Diaz Fernando",role:"Ayudante de Galvanizado"},
+  {id:19,name:"Olivos Guivar Alex Orlando",role:"Ayudante de Galvanizado"},
+  {id:20,name:"Rojas Flores Julio Edwin",role:"Ayudante de Proceso"},
+  {id:21,name:"Cespedes Palacios Irvin",role:"Supervisor"},
+  {id:22,name:"Figueroa Santacruz Kevin Yarly",role:"Operario Soldador"},
+  {id:23,name:"Basilio Manrique Merly Samanta",role:"Operador de Limpieza"},
+  {id:24,name:"Bastardo Rodriguez Henrry Alexis",role:"Operario Soldador"},
+  {id:25,name:"Niquin Mucha Jorge Armando",role:"Control de Calidad"},
+  {id:26,name:"Ramon Perez Cesar David",role:"Encargado de SSOMA"},
+  {id:27,name:"Ortega Gratelly Dandy",role:"Supervisor"},
+  {id:28,name:"Huapaya Sulca Oscar Pedro",role:"Ayudante de Galvanizado"},
+  {id:29,name:"Huaman Salas Christian Nico",role:"Operador de Procesos"},
+  {id:30,name:"Ortelano Yahuarcani Willy",role:"Ayudante de Proceso"},
+  {id:31,name:"Correa Aguilar Juan Carlos",role:"Ayudante de Galvanizado"},
+  {id:32,name:"Padilla Huayamba Tomas",role:"Ayudante de Galvanizado"},
+  {id:33,name:"Chavez De La Cruz Cristian Pool",role:"Ayudante de Proceso"},
+  {id:34,name:"Ortelano Yahuarcani Orlando",role:"Ayudante de Proceso"},
+  {id:35,name:"Bardales Sandoval Jorge",role:"Operador de Procesos"},
+  {id:36,name:"Pancorbo Zumba Jhon Amilcar",role:"Ayudante de Galvanizado"},
+  {id:37,name:"Barrientos Marcacuzco Antony Brayan",role:"Ayudante de Proceso"},
+  {id:38,name:"Flores Ostos Juan Carlos",role:"Ayudante de Galvanizado"},
+  {id:39,name:"Livelli Mansilla Miguel Angel",role:"Ayudante de Galvanizado"},
+  {id:40,name:"Palomino Farfan Huilder",role:"Ayudante de Galvanizado"},
+  {id:41,name:"Parrilla Huanca Leiber",role:"Operador de Procesos"},
+  {id:42,name:"Flores Lopez Fernando Junior",role:"Ayudante de Proceso"},
+  {id:43,name:"Salazar Guerra Neiser",role:"Ayudante de Galvanizado"},
+  {id:44,name:"Huaman Huerta Nicasio",role:"Ayudante de Proceso"},
+  {id:45,name:"Quispe Alarcon Walter Cesar",role:"Ayudante de Proceso"},
+  {id:46,name:"Pomazoncco Yupanqui Juan Carlos",role:"Ayudante de Proceso"},
+  {id:47,name:"Villaran Oliveira Moises Humberto",role:"Ayudante de Galvanizado"},
 ];
-
-let orders = [], selectedWorker = null, supUnlocked = false, liveCount = 0, forceUnlocked = false;
-
-// ── TIME ──
-function isClosed() { const h = new Date().getHours(), m = new Date().getMinutes(); return h > 9 || (h === 9 && m >= 1); }
-function isForceWindow() { const h = new Date().getHours(); return h >= 9 && h < 13; }
-function todayStr() { return new Date().toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'}); }
-function nowStr() { return new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'}); }
-function todayKey() { return new Date().toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'}); }
-function initials(name) { return name.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
-
-// ── INIT ──
-document.getElementById('today-label').textContent = todayStr();
-document.getElementById('sup-date-label').textContent = todayStr();
-
-function checkTimeGate() {
-  const closed = isClosed() && !forceUnlocked;
-  document.getElementById('closed-section').style.display = closed ? 'block' : 'none';
-  document.getElementById('form-screen').style.display = closed ? 'none' : 'block';
-  if (document.querySelector('.force-section'))
-    document.querySelector('.force-section').style.display = isForceWindow() ? 'block' : 'none';
-}
-checkTimeGate();
-
-// ── FORCE KEY ──
-function checkForce() {
-  const val = document.getElementById('force-input').value;
-  if (val === PIN) {
-    forceUnlocked = true;
-    document.getElementById('closed-section').style.display = 'none';
-    document.getElementById('form-screen').style.display = 'block';
-    document.getElementById('force-input').value = '';
-    document.getElementById('force-error').textContent = '';
-  } else {
-    document.getElementById('force-error').textContent = 'Clave incorrecta.';
-    document.getElementById('force-input').value = '';
-  }
-}
-
-// ── SEARCH ──
-function availableWorkers() { return WORKERS.filter(w => !orders.find(o => o.workerId === w.id)); }
-function filterWorkers() {
-  const q = document.getElementById('search-input').value.toLowerCase().trim();
-  const dd = document.getElementById('worker-dropdown');
-  const pool = availableWorkers();
-  const filtered = q.length < 1 ? pool.slice(0,15) : pool.filter(w => w.name.toLowerCase().includes(q));
-  dd.innerHTML = filtered.length === 0
-    ? '<div class="dropdown-item"><div class="dname" style="color:#8a9090">No encontrado o ya registrado</div></div>'
-    : filtered.map(w => `<div class="dropdown-item" onclick="selectWorker(${w.id})"><div class="dname">${w.name}</div><div class="drole">${w.role}</div></div>`).join('');
-  dd.classList.add('open');
-}
-function openDropdown() { filterWorkers(); }
-function selectWorker(id) {
-  const w = WORKERS.find(x=>x.id===id);
-  if (!w || orders.find(o=>o.workerId===w.id)) return;
-  selectedWorker = w;
-  document.getElementById('search-input').value = '';
-  document.getElementById('worker-dropdown').classList.remove('open');
-  document.getElementById('worker-avatar').textContent = initials(w.name);
-  document.getElementById('worker-name-display').textContent = w.name;
-  document.getElementById('worker-role-display').textContent = w.role;
-  document.getElementById('selected-worker').classList.add('show');
-  document.getElementById('btn-confirm').classList.add('ready');
-  // Scroll confirm button into view on mobile
-  setTimeout(() => document.getElementById('btn-confirm').scrollIntoView({behavior:'smooth', block:'end'}), 100);
-}
-function clearWorker() {
-  selectedWorker = null;
-  document.getElementById('selected-worker').classList.remove('show');
-  document.getElementById('btn-confirm').classList.remove('ready');
-}
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap') && !e.target.closest('.dropdown'))
-    document.getElementById('worker-dropdown').classList.remove('open');
-});
-
-// ── CONFIRM ──
-async function confirmOrder() {
-  if (!selectedWorker) return;
-  if (orders.find(o=>o.workerId===selectedWorker.id)) return;
-  const btn = document.getElementById('btn-confirm');
-  btn.textContent = 'Guardando...';
-  btn.classList.remove('ready');
-  const now = nowStr();
-  try {
-    await fetch(SCRIPT_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({fecha:todayKey(), nombre:selectedWorker.name, cargo:selectedWorker.role, hora:now})
-    });
-  } catch(e) { console.error(e); }
-  orders.push({workerId:selectedWorker.id, time:now});
-  const firstName = selectedWorker.name.split(' ')[2] || selectedWorker.name.split(' ')[0];
-  document.getElementById('success-name').textContent = firstName;
-  document.getElementById('sc-name').textContent = selectedWorker.name;
-  document.getElementById('sc-date').textContent = todayStr();
-  document.getElementById('sc-time').textContent = now;
-  document.getElementById('form-screen').style.display = 'none';
-  document.getElementById('success-screen').classList.add('show');
-  forceUnlocked = false;
-  btn.textContent = 'Confirmar pedido →';
-}
-
-// ── PIN MODAL ──
-function requestSupervisor() {
-  if (supUnlocked) { activateSupervisor(); return; }
-  document.getElementById('modal-overlay').classList.add('open');
-  document.getElementById('pin-input').value = '';
-  document.getElementById('pin-error').textContent = '';
-  setTimeout(() => document.getElementById('pin-input').focus(), 350);
-}
-function checkPin() {
-  const val = document.getElementById('pin-input').value;
-  if (val === PIN) {
-    supUnlocked = true;
-    document.getElementById('modal-overlay').classList.remove('open');
-    activateSupervisor();
-  } else {
-    document.getElementById('pin-error').textContent = 'Clave incorrecta.';
-    document.getElementById('pin-input').value = '';
-  }
-}
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
-
-// ── VIEWS ──
-function setView(id) {
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('view-'+id).classList.add('active');
-  const tab = document.getElementById('tab-'+id);
-  if (tab) tab.classList.add('active');
-}
-function switchToOperario() { setView('operario'); checkTimeGate(); }
-function activateSupervisor() { setView('supervisor'); renderSupervisor(); }
-function logoutSupervisor() { supUnlocked = false; switchToOperario(); }
-
-// ── SUPERVISOR ──
-async function renderSupervisor() {
-  document.getElementById('stat-confirmed').textContent = '...';
-  document.getElementById('stat-pending').textContent = '...';
-  document.getElementById('list-confirmed').innerHTML = '<div class="person-row" style="color:var(--muted)">Cargando...</div>';
-  document.getElementById('list-pending').innerHTML = '';
-  let sheetRows = [];
-  try {
-    const res = await fetch(`${SCRIPT_URL}?fecha=${encodeURIComponent(todayKey())}`);
-    sheetRows = await res.json();
-  } catch(e) { console.error(e); }
-  const sheetNames = sheetRows.map(r=>r.nombre);
-  const sessionExtra = orders.map(o=>WORKERS.find(x=>x.id===o.workerId))
-    .filter(w=>w&&!sheetNames.includes(w.name))
-    .map(w=>({nombre:w.name, cargo:w.role, hora:orders.find(o=>o.workerId===w.id).time}));
-  const all = [...sheetRows, ...sessionExtra];
-  liveCount = all.length;
-  const names = all.map(r=>r.nombre);
-  const pending = WORKERS.filter(w=>!names.includes(w.name));
-  document.getElementById('stat-confirmed').textContent = all.length;
-  document.getElementById('stat-pending').textContent = pending.length;
-  document.getElementById('list-confirmed').innerHTML = all.length === 0
-    ? '<div class="person-row" style="color:var(--muted)">Ningún pedido aún</div>'
-    : all.map(c=>`<div class="person-row"><div class="mini-avatar ok">${initials(c.nombre)}</div><div class="p-name">${c.nombre}</div><div class="p-time">${c.hora||''}</div></div>`).join('');
-  document.getElementById('list-pending').innerHTML = pending.length === 0
-    ? '<div class="person-row" style="color:var(--amber)">✓ Todos registrados</div>'
-    : pending.map(w=>`<div class="person-row"><div class="mini-avatar no">${initials(w.name)}</div><div class="p-name">${w.name}</div><div class="p-time" style="color:var(--red-bright)">pendiente</div></div>`).join('');
-}
-
-// ── WHATSAPP ──
-function sendWhatsApp() {
-  let msg = `🔩 *SERA — Pedido de almuerzo*\n📅 ${todayStr()}\n\n🍱 *Menús solicitados: ${liveCount}*\n\n_Cierre: 9:00 am_`;
-  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
-}
-
-// ── QR ──
-function generateQR() {
-  const url = window.location.href.split('?')[0];
-  document.getElementById('qr-url-display').textContent = url;
-  const canvas = document.getElementById('qr-canvas');
-  // Use QRCode library
-  canvas.width = 220; canvas.height = 220;
-  try {
-    QRCode.toCanvas(canvas, url, {
-      width: 220,
-      margin: 1,
-      color: { dark: '#1a1c1c', light: '#ffffff' }
-    });
-  } catch(e) { console.error(e); }
-}
-// Generate QR when view-qr becomes active — trigger on supervisor logout won't matter
-// We'll generate on page load since URL is static
-window.addEventListener('load', () => {
-  setTimeout(generateQR, 500);
-});
-</script>
-</body>
-</html>
+const DAYS_ES=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MONTHS_ES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+let selectedWorker=null,selectedDates=new Set(),registeredDates=new Set(),supUnlocked=false,forceUnlocked=false,liveCount=0,supSelectedDate=null;
+function dateKey(d){return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function dateShort(d){return `${DAYS_ES[d.getDay()]} ${d.getDate()}`;}
+function today(){const d=new Date();d.setHours(0,0,0,0);return d;}
+function getHour(){return new Date().getHours();}
+function getWeekDates(){const now=today();const dow=now.getDay();const monday=new Date(now);monday.setDate(now.getDate()-(dow===0?6:dow-1));const dates=[];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}return dates;}
+function getAvailableDates(){const h=getHour();const todayD=today();const week=getWeekDates();if(h<9){return week.filter(d=>d>=todayD);}else{const tomorrow=new Date(todayD);tomorrow.setDate(todayD.getDate()+1);return week.filter(d=>d>=tomorrow);}}
+function getStatus(){const h=getHour();if(h<9)return{text:'<strong>Registro abierto</strong> — puedes pedir para hoy y esta semana',dot:'open'};if(h<15)return{text:'<strong>Registro cerrado</strong> — solo supervisores pueden añadir pedidos de hoy',dot:'closed'};return{text:'<strong>Registro abierto</strong> — puedes pedir para mañana y esta semana',dot:'open'};}
+function showForceSection(){return getHour()>=9;}
+document.getElementById('today-label').textContent=new Date().toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
+document.getElementById('sup-date-label').textContent=new Date().toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
+initStatusBar();initSupDateFilter();
+function initStatusBar(){const s=getStatus();document.getElementById('status-dot').className=`status-dot ${s.dot}`;document.getElementById('status-text').innerHTML=s.text;document.getElementById('force-section').style.display=showForceSection()&&!forceUnlocked?'block':'none';}
+function checkForce(){const val=document.getElementById('force-input').value;if(val===PIN){forceUnlocked=true;document.getElementById('force-section').style.display='none';document.getElementById('force-active-badge').classList.add('show');document.getElementById('force-input').value='';document.getElementById('force-error').textContent='';if(selectedWorker)buildDateGrid();}else{document.getElementById('force-error').textContent='Clave incorrecta.';document.getElementById('force-input').value='';}}
+function filterWorkers(){const q=document.getElementById('search-input').value.toLowerCase().trim();const dd=document.getElementById('worker-dropdown');const filtered=q.length<1?WORKERS.slice(0,15):WORKERS.filter(w=>w.name.toLowerCase().includes(q));dd.innerHTML=filtered.length===0?'<div class="dropdown-item"><div class="dname" style="color:#8a9090">No encontrado</div></div>':filtered.map(w=>`<div class="dropdown-item" onclick="selectWorker(${w.id})"><div class="dname">${w.name}</div><div class="drole">${w.role}</div></div>`).join('');dd.classList.add('open');}
+function openDropdown(){filterWorkers();}
+async function selectWorker(id){const w=WORKERS.find(x=>x.id===id);if(!w)return;selectedWorker=w;selectedDates.clear();registeredDates.clear();document.getElementById('search-input').value='';document.getElementById('worker-dropdown').classList.remove('open');document.getElementById('worker-avatar').textContent=initials(w.name);document.getElementById('worker-name-display').textContent=w.name;document.getElementById('worker-role-display').textContent=w.role;document.getElementById('selected-worker').classList.add('show');document.getElementById('date-selector-wrap').style.display='block';await loadWorkerRegistrations(w.name);buildDateGrid();checkConfirmReady();}
+async function loadWorkerRegistrations(nombre){try{const week=getWeekDates();for(const d of week){const key=dateKey(d);const res=await fetch(`${SCRIPT_URL}?fecha=${encodeURIComponent(key)}`);const rows=await res.json();if(rows.some(r=>r.nombre===nombre)){registeredDates.add(key);}}}catch(e){console.error(e);}}
+function buildDateGrid(){const availableNormal=getAvailableDates();const todayD=today();const todayK=dateKey(todayD);const week=getWeekDates();document.getElementById('date-grid').innerHTML=week.map(d=>{const key=dateKey(d);const isToday=key===todayK;const isPast=d<todayD;if(isPast)return'';const isRegistered=registeredDates.has(key);const isAvailableNormal=availableNormal.some(av=>dateKey(av)===key);const isTodayForce=isToday&&forceUnlocked&&getHour()>=9;const isAvailable=isAvailableNormal||isTodayForce;const isSelected=selectedDates.has(key);let cls='date-btn';let tag='';let oc='';if(isRegistered){cls+=' already-registered';tag='<div class="date-tag registered">✓ Ya registrado</div>';}else if(!isAvailable){tag='<div class="date-tag" style="color:var(--muted)">No disponible</div>';}else{if(isTodayForce&&isToday)tag='<div class="date-tag force">Clave de fuerza</div>';if(isSelected)cls+=' selected';oc=`onclick="toggleDate('${key}',this)"`;}return`<div class="${cls}" ${oc} data-key="${key}"><div class="date-check">${isRegistered?'✓':isSelected?'✓':''}</div><div class="date-weekday">${DAYS_ES[d.getDay()]}${isToday?' · HOY':''}</div><div class="date-num">${d.getDate()}</div><div class="date-month">${MONTHS_ES[d.getMonth()]}</div>${tag}</div>`;}).join('');}
+function toggleDate(key,el){const todayK=dateKey(today());const isToday=key===todayK;if(isToday&&getHour()>=9&&!forceUnlocked)return;if(registeredDates.has(key))return;if(selectedDates.has(key)){selectedDates.delete(key);el.classList.remove('selected');el.querySelector('.date-check').textContent='';}else{selectedDates.add(key);el.classList.add('selected');el.querySelector('.date-check').textContent='✓';}checkConfirmReady();}
+function clearWorker(){selectedWorker=null;selectedDates.clear();registeredDates.clear();document.getElementById('selected-worker').classList.remove('show');document.getElementById('date-selector-wrap').style.display='none';checkConfirmReady();}
+function checkConfirmReady(){document.getElementById('btn-confirm').classList.toggle('ready',!!(selectedWorker&&selectedDates.size>0))
